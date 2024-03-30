@@ -22,11 +22,9 @@ Git 是如何保存数据的：**GIt 保存的不是文件的变化或者差异�
 
 做些修改后再次提交，那么这次产生的提交对象会包含一个指向上次提交对象（父对象）的指针。
 
-<img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240201/截屏2024-02-01-10.24.17.4ybdlbej9rw0.png"/>
+![](https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240201/截屏2024-02-01-10.24.17.4ybdlbej9rw0.png)
 
-
-
-<img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240201/截屏2024-02-01-10.26.30.2kpnfwbngmi0.png"/>
+![](https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240201/截屏2024-02-01-10.26.30.2kpnfwbngmi0.png)
 
 ### 二.分支创建
 
