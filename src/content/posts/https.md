@@ -24,11 +24,11 @@ systemctl status nginx
 
 ## 第二步：登录[Let's Encrypt](https://letsencrypt.org/zh-cn/)
 
-<img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.47.26.1jbqvrafn4yo.png" alt="截屏2024-03-24-18" />
+![](https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.47.26.1jbqvrafn4yo.png)
 
-<img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.53.07.1g6t3u16arog.png" alt="截屏2024-03-24-18" />
+![](https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.53.07.1g6t3u16arog.png)
 
-<img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.54.03.3nx8bl7mzey0.png" alt="截屏2024-03-24-18" />
+![](https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.54.03.3nx8bl7mzey0.png)
 
 选择你的 web 服务器和系统
 
