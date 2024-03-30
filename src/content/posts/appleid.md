@@ -1,6 +1,6 @@
 ---
 title: 美区 Apple ID 注册
-tags: ["Knowledge"]
+categories: ["Knowledge"]
 pubDate: 2024-2-19
 description: ''
 ---
