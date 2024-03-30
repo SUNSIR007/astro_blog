@@ -1,21 +1,21 @@
 export const THEME_CONFIG: App.Locals['config'] = {
   /** blog title */
-  title: "活版印字",
+  title: "Ryuichi's Blog",
   /** your name */
-  author: "Typography",
+  author: "Ryuichi",
   /** website description */
-  desc: "Rediscory the beauty of typography",
+  desc: "Life is a game",
   /** your deployed domain */
-  website: "https://astro-theme-typography.vercel.app/",
+  website: "https://astro-blog-sunsir007.vercel.app/",
   /** your locale */
   locale: "en-us",
   /** theme style */
-  themeStyle: "light",
+  themeStyle: "dark",
   /** your socials */
   socials: [
     {
       name: "github",
-      href: "https://github.com/moeyua/astro-theme-typography",
+      href: "https://github.com/SUNSIR007?tab=repositories",
     },
     {
       name: "rss",
@@ -23,16 +23,12 @@ export const THEME_CONFIG: App.Locals['config'] = {
     },
     {
       name: "twitter",
-      href: "https://github.com/moeyua/astro-theme-typography",
-    },
-    {
-      name: "mastodon",
-      href: "https://github.com/moeyua/astro-theme-typography",
+      href: "https://twitter.com/Ryuichi_lol",
     }
   ],
   /** your header info */
   header: {
-    twitter: "@moeyua13",
+    twitter: "@ryuichi_lol",
   },
   /** your navigation links */
   navs: [
