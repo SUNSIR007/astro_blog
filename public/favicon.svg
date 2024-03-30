@@ -1,8 +1,8 @@
 <svg width="512" height="512" viewBox="0 0 512 512" style="color:#000000"
     xmlns="http://www.w3.org/2000/svg" class="h-full w-full">
-    <rect width="512" height="512" x="0" y="0" rx="43" fill="transparent" stroke="transparent"
+    <rect width="512" height="512" x="0" y="0" rx="30" fill="transparent" stroke="transparent"
         stroke-width="0" stroke-opacity="100%" paint-order="stroke"></rect>
-    <svg width="426px" height="426px" viewBox="0 0 48 48" fill="#000000" x="43" y="43" role="img"
+    <svg width="512px" height="512px" viewBox="0 0 48 48" fill="#000000" x="0" y="0" role="img"
         style="display:inline-block;vertical-align:middle" xmlns="http://www.w3.org/2000/svg">
         <g fill="black">
             <path fill="#e5feff" stroke="#45413c" stroke-linecap="round" stroke-linejoin="round"
