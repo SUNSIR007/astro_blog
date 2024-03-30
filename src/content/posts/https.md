@@ -26,7 +26,11 @@ systemctl status nginx
 
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.47.26.1jbqvrafn4yo.png" alt="截屏2024-03-24-18" />
 
+
+
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.53.07.1g6t3u16arog.png" alt="截屏2024-03-24-18" />
+
+
 
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240324/截屏2024-03-24-18.54.03.3nx8bl7mzey0.png" alt="截屏2024-03-24-18" />
 

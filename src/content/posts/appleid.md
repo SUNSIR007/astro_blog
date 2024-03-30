@@ -11,6 +11,8 @@ https://appleid.apple.com/
 
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240219/截屏2024-02-19-15.45.16.jf0gkkrddow.png" alt="截屏2024-02-19-15" />
 
+
+
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240219/截屏2024-02-19-15.47.19.276ufalftphc.png" alt="截屏2024-02-19-15" />
 
 国家选择中国大陆，其他按照步骤填写即可。

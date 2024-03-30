@@ -24,6 +24,8 @@ Git 是如何保存数据的：**GIt 保存的不是文件的变化或者差异�
 
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240201/截屏2024-02-01-10.24.17.4ybdlbej9rw0.png"/>
 
+
+
 <img src="https://cdn.jsdelivr.net/gh/SUNSIR007/picx-images-hosting@master/20240201/截屏2024-02-01-10.26.30.2kpnfwbngmi0.png"/>
 
 ### 二.分支创建
