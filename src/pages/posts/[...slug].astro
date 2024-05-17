@@ -33,7 +33,8 @@ const { translate: t} = Astro.locals
   <Post post={entry}>
     <Content />
   </Post>
-  <Pagination
+  <!--定义页尾是否有访问下一页的标签 -->
+  <!-- <Pagination
       showLeft={Boolean(prev)}
       leftTitle={`${t('prev_post')}: ${prev?.data.title}`}
       leftUrl={`/posts/${prev?.slug}/`}
@@ -41,7 +42,7 @@ const { translate: t} = Astro.locals
       rightTitle={`${t('next_post')}: ${next?.data.title}`}
       rightUrl={`/posts/${next?.slug}/`}
       showPageCount={false}
-    />
+    /> -->
 </LayoutDefault>
 
 
