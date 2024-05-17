@@ -12,20 +12,20 @@ export const THEME_CONFIG: App.Locals['config'] = {
   /** theme style */
   themeStyle: "dark",
   /** your socials */
-  socials: [
-    {
-      name: "github",
-      href: "https://github.com/SUNSIR007?tab=repositories",
-    },
-    {
-      name: "rss",
-      href: "/atom.xml",
-    },
-    {
-      name: "twitter",
-      href: "https://twitter.com/Ryuichi_lol",
-    }
-  ],
+  // socials: [
+  //   {
+  //     name: "github",
+  //     href: "https://github.com/SUNSIR007?tab=repositories",
+  //   },
+  //   {
+  //     name: "rss",
+  //     href: "/atom.xml",
+  //   },
+  //   {
+  //     name: "twitter",
+  //     href: "https://twitter.com/Ryuichi_lol",
+  //   }
+  // ],
   /** your header info */
   header: {
     twitter: "@ryuichi_lol",
