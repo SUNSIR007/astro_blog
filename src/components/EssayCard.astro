@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  essay: CollectionEntry<'essays'>
+}
+
+const { essay } = Astro.props
+
+// 格式化时间为简洁格式
+function formatEssayDate(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}/${month}/${day}`
+}
+---
+
+<!-- 带连接线的随笔卡片 -->
+<article class="relative py-4 last:border-b-0">
+  <!-- 连接线 - 模仿图片中头像之间的连接 -->
+  <div class="absolute left-2 top-0 bottom-0 w-px bg-gray-600 last:hidden"></div>
+
+  <!-- 圆点 - 代替头像 -->
+  <div class="relative flex gap-3">
+    <div class="flex-shrink-0 relative z-10">
+      <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+    </div>
+
+    <!-- 内容区域 -->
+    <div class="flex-1 min-w-0 pb-4">
+      <!-- 用户名和时间 -->
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-white font-medium text-sm">Ryuichi</span>
+        <span class="text-gray-500 text-xs">{formatEssayDate(essay.data.pubDate)}</span>
+      </div>
+
+      <!-- 随笔内容 - 增大字体 -->
+      <div class="text-gray-300 text-base leading-relaxed">
+        <slot />
+      </div>
+    </div>
+  </div>
+</article>

@@ -13,50 +13,136 @@ interface Props {
   showPageCount?: boolean
   currentPage?: number
   totalPage?: number
+
+  // 新增：用于生成页面链接的基础URL
+  baseUrl?: string
 }
 
-const { showLeft = true, showRight = true, leftTitle, rightTitle, leftUrl, rightUrl, showPageCount = true, currentPage, totalPage } = Astro.props
+const {
+  showLeft = true,
+  showRight = true,
+  leftTitle,
+  rightTitle,
+  leftUrl,
+  rightUrl,
+  showPageCount = true,
+  currentPage = 1,
+  totalPage = 1,
+  baseUrl = ''
+} = Astro.props
+
+// 生成页面按钮数组，最多显示5个
+function generatePageNumbers(current: number, total: number) {
+  const pages = []
+  const maxVisible = 5
+
+  if (total <= maxVisible) {
+    // 如果总页数不超过5页，显示所有页面
+    for (let i = 1; i <= total; i++) {
+      pages.push(i)
+    }
+  } else {
+    // 如果总页数超过5页，智能显示
+    let start = Math.max(1, current - 2)
+    let end = Math.min(total, start + maxVisible - 1)
+
+    // 调整起始位置，确保显示5个页面
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1)
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+  }
+
+  return pages
+}
+
+const pageNumbers = generatePageNumbers(currentPage, totalPage)
 ---
 
-<footer class="mt-5">
+<footer class="mt-8">
   {
     showPageCount && (
-      <p class="mb-2.5">
+      <p class="mb-4 text-center text-sm text-gray-600 dark:text-gray-400">
         {t('page_number', currentPage)} / {t('page_count', totalPage)}
       </p>
     )
   }
-  <p class="flex items-center gap-2">
-    {
-      showLeft && (
-        <span class="inline-flex items-center">
-          <i class="i-mdi-chevron-double-left icon" />
-          <a href={leftUrl}>{leftTitle}</a>
+
+  {/* 修复后的分页导航 */}
+  {totalPage > 1 && (
+    <nav class="flex items-center justify-center gap-6">
+      {/* 上一页按钮 - 修复显示问题 */}
+      {currentPage > 1 ? (
+        <a
+          href={leftUrl || (baseUrl ? `${baseUrl}${currentPage - 1}` : '#')}
+          class="text-gray-400 hover:text-white transition-colors text-sm"
+        >
+          ← 上一页
+        </a>
+      ) : (
+        <span class="text-gray-600 cursor-not-allowed text-sm">
+          ← 上一页
         </span>
-      )
-    }
-    {
-      showRight && (
-        <span class="inline-flex items-center">
-          <a href={rightUrl}>{rightTitle}</a>
-          <i class="i-mdi-chevron-double-right icon" />
+      )}
+
+      {/* 页面数字按钮 - 只高亮当前页 */}
+      <div class="flex items-center gap-3">
+        {pageNumbers.map((pageNum) => (
+          pageNum === currentPage ? (
+            <span class="text-white font-medium text-base bg-gray-700 px-2 py-1 rounded">
+              {pageNum}
+            </span>
+          ) : (
+            <a
+              href={baseUrl ? `${baseUrl}${pageNum}` : '#'}
+              class="text-gray-400 hover:text-white font-medium text-base transition-colors px-2 py-1"
+            >
+              {pageNum}
+            </a>
+          )
+        ))}
+      </div>
+
+      {/* 下一页按钮 - 修复显示问题 */}
+      {currentPage < totalPage ? (
+        <a
+          href={rightUrl || (baseUrl ? `${baseUrl}${currentPage + 1}` : '#')}
+          class="text-gray-400 hover:text-white transition-colors text-sm"
+        >
+          下一页 →
+        </a>
+      ) : (
+        <span class="text-gray-600 cursor-not-allowed text-sm">
+          下一页 →
         </span>
-      )
-    }
-  </p>
+      )}
+    </nav>
+  )}
+
+  {/* 保留原有的简单导航作为备选 */}
+  {totalPage <= 1 && (showLeft || showRight) && (
+    <div class="flex items-center justify-center gap-4">
+      {
+        showLeft && (
+          <span class="inline-flex items-center">
+            <i class="i-mdi-chevron-double-left icon" />
+            <a href={leftUrl}>{leftTitle}</a>
+          </span>
+        )
+      }
+      {
+        showRight && (
+          <span class="inline-flex items-center">
+            <a href={rightUrl}>{rightTitle}</a>
+            <i class="i-mdi-chevron-double-right icon" />
+          </span>
+        )
+      }
+    </div>
+  )}
 </footer>
 
-<!-- <footer class="mt-5">
-  <p class="mb-2.5">{t('page_number', page.currentPage)} / {t('page_count', page.lastPage)}</p>
-  <p class="flex items-center gap-2">
-    <span class="inline-flex items-center">
-      <i class="i-mdi-chevron-double-left icon"></i>
-      {page.url.prev ? <a href={page.url.prev}> {t('prev')} </a> : <span>{t('prev')}</span>}
-    </span>
 
-    <span class="inline-flex items-center">
-      {page.url.next ? <a href={page.url.next}>{t('next')}</a> : <span>{t('next')}</span>}
-      <i class="i-mdi-chevron-double-right icon"></i>
-    </span>
-  </p>
-</footer> -->

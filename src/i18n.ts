@@ -2,6 +2,7 @@ export const LANGUAGES = {
   'zh-cn': {
     Home: '首页',
     Posts: '文章',
+    Essays: '随笔',
     Categories: '分类',
     Archive: '归档',
     Tags: '标签',
@@ -25,6 +26,7 @@ export const LANGUAGES = {
   'en-us': {
     Home: 'Home',
     Posts: 'Posts',
+    Essays: 'Essays',
     Categories: 'Categories',
     Archive: 'Archive',
     Tags: 'Tags',
@@ -48,6 +50,7 @@ export const LANGUAGES = {
   'zh-tw': {
     Home: '首頁',
     Posts: '文章',
+    Essays: '隨筆',
     Categories: '分類',
     Archive: '歸檔',
     Tags: '標籤',
@@ -71,6 +74,7 @@ export const LANGUAGES = {
   'ja-jp': {
     Home: 'ホーム',
     Posts: '投稿',
+    Essays: 'エッセイ',
     Categories: 'カテゴリー',
     Archive: 'アーカイブ',
     Tags: 'タグ',

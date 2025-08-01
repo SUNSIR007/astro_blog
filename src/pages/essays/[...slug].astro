@@ -1,0 +1,100 @@
+---
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import { getEssays } from '~/utils'
+import type { InferGetStaticPropsType, GetStaticPaths } from 'astro'
+
+
+export const getStaticPaths = (async ({}) => {
+  const essays = await getEssays()
+  return essays.map((essay, idx) => {
+    const prev = essays[idx - 1]
+    const next = essays[idx + 1]
+    return {
+      params: { slug: essay.slug },
+      props: { entry: essay, next, prev },
+    }
+  })
+}) satisfies GetStaticPaths
+
+// type Params = InferGetStaticParamsType<typeof getStaticPaths>
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { entry, prev, next } = Astro.props
+const { Content } = await entry.render()
+
+// 格式化时间为简洁格式
+function formatEssayDate(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}/${month}/${day}`
+}
+
+---
+
+<LayoutDefault
+  title={entry.data.title || '随笔'}
+  desc={entry.data.description}
+  banner={entry.data.banner}
+>
+  <!-- 随笔详情页面 - 修复宽度问题，使用与主页相同的布局 -->
+  <section contain-layout un-flex="~ col gap-7.5">
+    <!-- 随笔详情卡片 -->
+    <article class="relative py-4">
+      <!-- 圆点 - 与列表页保持一致 -->
+      <div class="flex gap-3">
+        <div class="flex-shrink-0">
+          <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="flex-1 min-w-0">
+          <!-- 用户名和时间 -->
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-white font-medium text-sm">Ryuichi</span>
+            <span class="text-gray-500 text-xs">{formatEssayDate(entry.data.pubDate)}</span>
+          </div>
+
+          <!-- 随笔内容 - 增大字体，限制最大宽度 -->
+          <div class="text-gray-300 text-base leading-relaxed prose prose-invert max-w-2xl [&>p]:mb-4 [&>*]:text-gray-300">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 底部导航 - 简化样式 -->
+    <div class="flex justify-between items-center py-4 border-t border-gray-700/20">
+      {prev ? (
+        <a
+          href={`/essays/${prev.slug}/`}
+          class="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
+        >
+          <span class="i-mdi-chevron-left mr-1"></span>
+          上一篇
+        </a>
+      ) : (
+        <div></div>
+      )}
+
+      <a
+        href="/essays/page/1"
+        class="text-sm text-gray-400 hover:text-white transition-colors"
+      >
+        返回随笔
+      </a>
+
+      {next ? (
+        <a
+          href={`/essays/${next.slug}/`}
+          class="flex items-center text-sm text-gray-400 hover:text-white transition-colors"
+        >
+          下一篇
+          <span class="i-mdi-chevron-right ml-1"></span>
+        </a>
+      ) : (
+        <div></div>
+      )}
+    </div>
+  </section>
+</LayoutDefault>

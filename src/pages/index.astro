@@ -19,6 +19,15 @@ const { translate: t } = Astro.locals
         </Post>
       ))
     }
-    <Pagination showLeft={false} showPageCount={false} rightTitle={t('all_posts')} rightUrl={'posts/page/1'} />
+    <Pagination
+      showLeft={false}
+      showRight={true}
+      rightTitle={t('next')}
+      rightUrl={'posts/page/2'}
+      currentPage={1}
+      totalPage={Math.ceil((await getPosts()).length / 5)}
+      baseUrl="/posts/page/"
+      showPageCount={false}
+    />
   </section>
 </LayoutDefault>

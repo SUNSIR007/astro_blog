@@ -1,30 +1,60 @@
 ---
-import { formatDate } from '~/utils'
+import { formatDate, getEssayDisplayTitle } from '~/utils'
+import type { CollectionEntry } from 'astro:content'
+
 interface Props {
-  post: Post
+  post: CollectionEntry<'posts'> | CollectionEntry<'essays'>
 }
 
 const { post } = Astro.props
 const { translate: t } = Astro.locals
+
+// 根据集合类型确定链接前缀和分类链接前缀
+const isEssay = post.collection === 'essays'
+const linkPrefix = isEssay ? '/essays/' : '/posts/'
+const categoryPrefix = isEssay ? '/essay-categories/' : '/categories/'
+
+// 获取显示标题
+const displayTitle = isEssay ? getEssayDisplayTitle(post as CollectionEntry<'essays'>) : post.data.title
 ---
 
 <article class="heti">
   <header>
-    <h1 class="post-title!">
-      <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
-    </h1>
-    <div class="mt-2 text-3.5">
-      <span>{t('posted_at')}</span>
-      <time>{formatDate(post.data.pubDate)}</time>
-      {
-        post.data.categories &&
-          post.data.categories.map((category) => (
-            <a class="ml-2.5" href={`/categories/${category}`}>
-              # {category}
-            </a>
-          ))
-      }
-    </div>
+    {isEssay ? (
+      // 随笔样式：更简洁，类似微博
+      <div class="mb-4">
+        <div class="text-3.5 text-gray-500 mb-2">
+          <time>{formatDate(post.data.pubDate)}</time>
+          {
+            post.data.categories &&
+              post.data.categories.map((category) => (
+                <a class="ml-2.5 text-blue-500 hover:text-blue-700" href={`${categoryPrefix}${category}`}>
+                  #{category}
+                </a>
+              ))
+          }
+        </div>
+      </div>
+    ) : (
+      // 博客文章样式：保持原有样式
+      <>
+        <h1 class="post-title!">
+          <a href={`${linkPrefix}${post.slug}/`}>{displayTitle}</a>
+        </h1>
+        <div class="mt-2 text-3.5">
+          <span>{t('posted_at')}</span>
+          <time>{formatDate(post.data.pubDate)}</time>
+          {
+            post.data.categories &&
+              post.data.categories.map((category) => (
+                <a class="ml-2.5" href={`${categoryPrefix}${category}`}>
+                  # {category}
+                </a>
+              ))
+          }
+        </div>
+      </>
+    )}
   </header>
   <slot />
 </article>

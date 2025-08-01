@@ -20,6 +20,24 @@ export async function getCategories() {
   return categories
 }
 
+export async function getEssayCategories() {
+  const essays = await getEssays()
+
+  const categories = new Map<string, Essay[]>()
+
+  essays.forEach((essay) => {
+    if (essay.data.categories) {
+      essay.data.categories.forEach((c) => {
+        const essays = categories.get(c) || []
+        essays.push(essay)
+        categories.set(c, essays)
+      })
+    }
+  })
+
+  return categories
+}
+
 export async function getPosts() {
   const posts = await getCollection('posts')
   posts.sort((a, b) => {
@@ -28,6 +46,16 @@ export async function getPosts() {
     return bDate.getTime() - aDate.getTime()
   })
   return posts
+}
+
+export async function getEssays() {
+  const essays = await getCollection('essays')
+  essays.sort((a, b) => {
+    const aDate = a.data.pubDate || new Date()
+    const bDate = b.data.pubDate || new Date()
+    return bDate.getTime() - aDate.getTime()
+  })
+  return essays
 }
 
 const parser = new MarkdownIt()
@@ -40,6 +68,29 @@ export function getPostDescription(post: Post) {
   const html = parser.render(post.body)
   const sanitized = sanitizeHtml(html, { allowedTags: [] })
   return sanitized.slice(0, 400)
+}
+
+export function getEssayDescription(essay: Essay) {
+  if (essay.data.description) {
+    return essay.data.description
+  }
+
+  const html = parser.render(essay.body)
+  const sanitized = sanitizeHtml(html, { allowedTags: [] })
+  return sanitized.slice(0, 400)
+}
+
+export function getEssayDisplayTitle(essay: Essay) {
+  // 如果有标题就使用标题
+  if (essay.data.title) {
+    return essay.data.title
+  }
+
+  // 否则使用内容的前50个字符作为标题
+  const html = parser.render(essay.body)
+  const sanitized = sanitizeHtml(html, { allowedTags: [] })
+  const preview = sanitized.slice(0, 50).trim()
+  return preview + (sanitized.length > 50 ? '...' : '')
 }
 
 export function formatDate(date?: Date) {
