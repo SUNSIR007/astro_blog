@@ -1,142 +1,54 @@
 ---
 import LayoutDefault from '~/layouts/LayoutDefault.astro'
 import EssayCard from '~/components/EssayCard.astro'
+import Pagination from '~/components/Pagination.astro'
 import { getEssays } from '~/utils'
 
 const { translate: t } = Astro.locals
 
-// 获取所有随笔
-const allEssays = await getEssays()
-
-// 初始显示的随笔数量
-const initialCount = 5
-const initialEssays = allEssays.slice(0, initialCount)
+// 获取前10篇随笔用于首页显示
+const essays = (await getEssays()).slice(0, 10)
+const totalEssays = await getEssays()
+const totalPages = Math.ceil(totalEssays.length / 10)
 ---
 
 <LayoutDefault>
-  <!-- 随笔主页面 - 无限滚动 -->
-  <section contain-layout un-flex="~ col gap-7.5">
-    <!-- 随笔列表容器 -->
-    <div id="essays-container" class="space-y-0">
-      {
-        initialEssays.map(async (essay) => {
-          const { Content } = await essay.render()
-          return (
-            <EssayCard essay={essay}>
-              <div class="prose prose-invert max-w-2xl [&>p]:mb-0 [&>*]:text-gray-300">
-                <Content />
-              </div>
-            </EssayCard>
-          )
-        })
-      }
-    </div>
-
-    <!-- 加载状态和底部提示 -->
-    <div id="loading-indicator" class="text-center py-8 hidden">
-      <div class="flex items-center justify-center gap-2">
-        <div class="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-        <span class="text-gray-400 text-sm">加载中...</span>
-      </div>
-    </div>
-
-    <div id="end-indicator" class="text-center py-8 hidden">
-      <div class="text-gray-500 text-sm flex items-center justify-center gap-1">
-        <span>到底了</span>
-        <span class="text-lg">~</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 隐藏的随笔数据 -->
-  <div id="hidden-essays" style="display: none;">
+  <section contain-layout un-flex="~ col">
     {
-      allEssays.slice(initialCount).map(async (essay) => {
+      essays.map(async (essay) => {
         const { Content } = await essay.render()
         return (
-          <div data-essay-slug={essay.slug} data-essay-date={essay.data.pubDate.toISOString()}>
-            <EssayCard essay={essay}>
-              <div class="prose prose-invert max-w-2xl [&>p]:mb-0 [&>*]:text-gray-300">
-                <Content />
-              </div>
-            </EssayCard>
-          </div>
+          <EssayCard essay={essay}>
+            <div class="prose prose-invert [&>p]:mb-0 [&>*]:text-gray-300">
+              <Content />
+            </div>
+          </EssayCard>
         )
       })
     }
-  </div>
-
-  <!-- 无限滚动脚本 -->
-  <script define:vars={{ initialCount }}>
-    let currentIndex = initialCount;
-    let isLoading = false;
-
-    const container = document.getElementById('essays-container');
-    const hiddenEssays = document.getElementById('hidden-essays');
-    const loadingIndicator = document.getElementById('loading-indicator');
-    const endIndicator = document.getElementById('end-indicator');
-
-    if (!container || !hiddenEssays || !loadingIndicator || !endIndicator) {
-      console.error('Required elements not found');
-      return;
-    }
-
-    const allHiddenEssays = Array.from(hiddenEssays.children);
-    let hasMore = allHiddenEssays.length > 0;
-
-    // 加载更多随笔
-    async function loadMoreEssays() {
-      if (isLoading || !hasMore) return;
-
-      isLoading = true;
-      loadingIndicator.classList.remove('hidden');
-
-      // 模拟网络延迟，提供更好的用户体验
-      await new Promise(resolve => setTimeout(resolve, 800));
-
-      const batchSize = 3; // 每次加载3篇随笔
-      const startIndex = currentIndex - initialCount;
-      const endIndex = Math.min(startIndex + batchSize, allHiddenEssays.length);
-
-      for (let i = startIndex; i < endIndex; i++) {
-        if (allHiddenEssays[i] && allHiddenEssays[i].firstElementChild) {
-          const essayElement = allHiddenEssays[i].firstElementChild.cloneNode(true);
-          container.appendChild(essayElement);
-        }
-      }
-
-      currentIndex += (endIndex - startIndex);
-      hasMore = endIndex < allHiddenEssays.length;
-
-      loadingIndicator.classList.add('hidden');
-
-      if (!hasMore) {
-        endIndicator.classList.remove('hidden');
-      }
-
-      isLoading = false;
-    }
-
-    // 滚动事件监听
-    function handleScroll() {
-      if (isLoading || !hasMore) return;
-
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-
-      // 当滚动到距离底部300px时开始加载
-      if (scrollTop + windowHeight >= documentHeight - 300) {
-        loadMoreEssays();
-      }
-    }
-
-    // 添加滚动监听
-    window.addEventListener('scroll', handleScroll);
-
-    // 初始检查是否需要显示结束提示
-    if (!hasMore) {
-      endIndicator.classList.remove('hidden');
-    }
-  </script>
+    {totalPages > 1 && (
+      <Pagination
+        showLeft={false}
+        showRight={true}
+        rightTitle={t('next')}
+        rightUrl={'essays/page/2'}
+        currentPage={1}
+        totalPage={totalPages}
+        baseUrl="/essays/page/"
+        showPageCount={false}
+      />
+    )}
+  </section>
 </LayoutDefault>
+
+<style>
+  /* 隐藏第一个随笔的上连线 */
+  article:first-of-type .essay-line-top {
+    display: none;
+  }
+
+  /* 隐藏最后一个随笔的下连线 */
+  article:last-of-type .essay-line-bottom {
+    display: none;
+  }
+</style>

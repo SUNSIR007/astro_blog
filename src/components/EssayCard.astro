@@ -7,24 +7,28 @@ interface Props {
 
 const { essay } = Astro.props
 
-// 格式化时间为简洁格式
+// 格式化时间为简洁格式，包含具体时间
 function formatEssayDate(date: Date) {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
-  return `${year}/${month}/${day}`
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${year}/${month}/${day} ${hours}:${minutes}`
 }
 ---
 
 <!-- 带连接线的随笔卡片 -->
-<article class="relative py-4 last:border-b-0">
-  <!-- 连接线 - 模仿图片中头像之间的连接 -->
-  <div class="absolute left-2 top-0 bottom-0 w-px bg-gray-600 last:hidden"></div>
+<article class="relative">
+  <!-- 圆点和内容 -->
+  <div class="relative flex gap-3 py-6">
+    <div class="flex-shrink-0 relative">
+      <!-- 连接线 - 从上一个圆点延伸到当前圆点，再延伸到下一个圆点 -->
+      <div class="absolute left-1/2 -top-6 bottom-1/2 w-px bg-gray-600 essay-line-top"></div>
+      <div class="absolute left-1/2 top-1/2 -bottom-6 w-px bg-gray-600 essay-line-bottom"></div>
 
-  <!-- 圆点 - 代替头像 -->
-  <div class="relative flex gap-3">
-    <div class="flex-shrink-0 relative z-10">
-      <div class="w-4 h-4 rounded-full bg-gray-500"></div>
+      <!-- 圆点 -->
+      <div class="w-4 h-4 rounded-full bg-gray-500 relative z-10"></div>
     </div>
 
     <!-- 内容区域 -->

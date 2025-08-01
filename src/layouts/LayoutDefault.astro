@@ -64,14 +64,29 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
   </head>
   <body>
     <div un-max-lg="animate-fadein-down" un-lg="flex flex-row-reverse justify-center gap-4 px-8" class="container contain-layout m-a">
-      <div un-lg="sticky top-0 h-screen py-20 animate-fadein-left gap-8" un-lg:flex="~ col justify-between items-start gap-4" class="p-7.5">
+      <div un-lg="sticky top-0 h-screen py-20 animate-fadein-left gap-8" un-lg:flex="~ col justify-between items-start gap-4" class="p-7.5 min-h-screen">
         <Header />
         <Footer class="max-lg:hidden" />
       </div>
-      <main un-lg="py-20 min-w-xl animate-fadein-down" class="p-7.5">
+      <main un-lg="py-20 w-3xl animate-fadein-down" class="p-7.5">
         <slot />
       </main>
       <Footer class="lg:hidden p-7.5" />
     </div>
   </body>
 </html>
+
+<style>
+  /* 确保导航栏位置一致性 */
+  @media (min-width: 1024px) {
+    .container {
+      min-height: 100vh;
+    }
+
+    /* 确保sticky定位的一致性 */
+    [un-lg*="sticky"] {
+      position: sticky !important;
+      top: 0 !important;
+    }
+  }
+</style>
