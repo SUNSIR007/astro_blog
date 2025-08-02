@@ -1,6 +1,6 @@
 ---
 import LayoutDefault from '~/layouts/LayoutDefault.astro'
-import { getEssays } from '~/utils'
+import { getEssays, formatEssayDate } from '~/utils'
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro'
 
 
@@ -21,16 +21,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { entry, prev, next } = Astro.props
 const { Content } = await entry.render()
-
-// 格式化时间为简洁格式，包含具体时间
-function formatEssayDate(date: Date) {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const hours = String(date.getHours()).padStart(2, '0')
-  const minutes = String(date.getMinutes()).padStart(2, '0')
-  return `${year}/${month}/${day} ${hours}:${minutes}`
-}
+const { author } = Astro.locals.config
 
 ---
 
@@ -53,7 +44,7 @@ function formatEssayDate(date: Date) {
         <div class="flex-1 min-w-0">
           <!-- 用户名和时间 -->
           <div class="flex items-center gap-2 mb-2">
-            <span class="text-white font-medium text-sm">Ryuichi</span>
+            <span class="text-white font-medium text-sm">{author}</span>
             <span class="text-gray-500 text-xs">{formatEssayDate(entry.data.pubDate)}</span>
           </div>
 

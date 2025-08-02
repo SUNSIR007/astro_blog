@@ -34,6 +34,11 @@ declare namespace App {
         name: string;
         path: string;
       }>,
+      /** pagination settings */
+      pagination: {
+        postsPerPage: number;
+        essaysPerPage: number;
+      },
     }
     translate: (key: string, param?: string | number) => string;
   }

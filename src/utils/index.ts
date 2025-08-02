@@ -70,15 +70,7 @@ export function getPostDescription(post: Post) {
   return sanitized.slice(0, 400)
 }
 
-export function getEssayDescription(essay: Essay) {
-  if (essay.data.description) {
-    return essay.data.description
-  }
 
-  const html = parser.render(essay.body)
-  const sanitized = sanitizeHtml(html, { allowedTags: [] })
-  return sanitized.slice(0, 400)
-}
 
 export function getEssayDisplayTitle(essay: Essay) {
   // 如果有标题就使用标题
@@ -100,6 +92,16 @@ export function formatDate(date?: Date) {
   const day = date.getDate().toString().padStart(2, '0')
 
   return `${year}-${month}-${day}`
+}
+
+// 格式化时间为简洁格式，包含具体时间（用于随笔）
+export function formatEssayDate(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${year}/${month}/${day} ${hours}:${minutes}`
 }
 
 export function getPathFromCategory(category: string, category_map: {name: string, path: string}[]) {

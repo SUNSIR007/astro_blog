@@ -7,16 +7,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.config = THEME_CONFIG;
   const locale = context.locals.config.locale;
   context.locals.translate = (key, param) => {
-    // @ts-ignore
-    if (!LANGUAGES[locale]) {
+    const languageData = LANGUAGES[locale as keyof typeof LANGUAGES];
+    if (!languageData) {
+      return key;
+    }
+    const translation = languageData[key as keyof typeof languageData];
+    if (!translation) {
       return key;
     }
     if (param) {
-      // @ts-ignore
-      return LANGUAGES[locale][key].replace('%d', param.toString());
+      return translation.replace('%d', param.toString());
     }
-    // @ts-ignore
-    return LANGUAGES[locale][key];
+    return translation;
   }
   return next();
 });

@@ -4,12 +4,14 @@ import EssayCard from '~/components/EssayCard.astro'
 import Pagination from '~/components/Pagination.astro'
 import { getEssays } from '~/utils'
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro'
+import '~/styles/essay-timeline.css'
 
 const { translate: t } = Astro.locals
 
 export const getStaticPaths = (async ({ paginate }) => {
   const essays = await getEssays()
-  return paginate(essays, { pageSize: 10 })
+  const { pagination } = await import('~/theme.config').then(m => m.THEME_CONFIG)
+  return paginate(essays, { pageSize: pagination.essaysPerPage })
 }) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
@@ -49,15 +51,3 @@ const { page } = Astro.props
     />
   </section>
 </LayoutDefault>
-
-<style>
-  /* 隐藏第一个随笔的上连线 */
-  article:first-of-type .essay-line-top {
-    display: none;
-  }
-
-  /* 隐藏最后一个随笔的下连线 */
-  article:last-of-type .essay-line-bottom {
-    display: none;
-  }
-</style>

@@ -4,7 +4,7 @@ import ListSection from '~/components/ListSection.astro'
 import LayoutDefault from '~/layouts/LayoutDefault.astro'
 import { getEssayCategories, getPathFromCategory } from '~/utils/index'
 
-const { translate: t } = Astro.locals
+
 const { category_map } = Astro.locals.config;
 
 const categories = await getEssayCategories()

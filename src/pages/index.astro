@@ -4,7 +4,8 @@ import Post from '~/components/Post.astro'
 import { getPosts, getPostDescription } from '~/utils'
 import Pagination from '~/components/Pagination.astro'
 
-const posts = (await getPosts()).slice(0, 5)
+const { pagination } = Astro.locals.config
+const posts = (await getPosts()).slice(0, pagination.postsPerPage)
 
 const { translate: t } = Astro.locals
 
@@ -25,7 +26,7 @@ const { translate: t } = Astro.locals
       rightTitle={t('next')}
       rightUrl={'posts/page/2'}
       currentPage={1}
-      totalPage={Math.ceil((await getPosts()).length / 5)}
+      totalPage={Math.ceil((await getPosts()).length / pagination.postsPerPage)}
       baseUrl="/posts/page/"
       showPageCount={false}
     />

@@ -1,0 +1,6 @@
+/* 随笔时间线样式 - 共享样式 */
+
+/* 隐藏最后一个随笔的下连线 */
+article:last-of-type .essay-line-bottom {
+  display: none;
+}

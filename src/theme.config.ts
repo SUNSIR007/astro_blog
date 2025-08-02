@@ -11,20 +11,25 @@ export const THEME_CONFIG: App.Locals['config'] = {
   locale: "en-us",
   /** theme style */
   themeStyle: "dark",
+  /** pagination settings */
+  pagination: {
+    postsPerPage: 5,
+    essaysPerPage: 10,
+  },
   /** your socials */
   socials: [
-    // {
-    //   name: "github",
-    //   href: "https://github.com/SUNSIR007?tab=repositories",
-    // },
-    // {
-    //   name: "rss",
-    //   href: "/atom.xml",
-    // },
-    // {
-    //   name: "twitter",
-    //   href: "https://twitter.com/Ryuichi_lol",
-    // }
+    {
+      name: "github",
+      href: "https://github.com/SUNSIR007?tab=repositories",
+    },
+    {
+      name: "rss",
+      href: "/atom.xml",
+    },
+    {
+      name: "twitter",
+      href: "https://twitter.com/Ryuichi_lol",
+    }
   ],
   /** your header info */
   header: {
@@ -34,7 +39,7 @@ export const THEME_CONFIG: App.Locals['config'] = {
   navs: [
     {
       name: "Posts",
-      href: "/posts/page/1",
+      href: "/",
     },
     {
       name: "Essays",

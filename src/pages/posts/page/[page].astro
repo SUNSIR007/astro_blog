@@ -9,7 +9,8 @@ const { translate: t } = Astro.locals
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getPosts()
-  return paginate(posts, { pageSize: 5 })
+  const { pagination } = await import('~/theme.config').then(m => m.THEME_CONFIG)
+  return paginate(posts, { pageSize: pagination.postsPerPage })
 }) satisfies GetStaticPaths
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
