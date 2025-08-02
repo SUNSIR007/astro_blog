@@ -1,9 +1,9 @@
 /// <reference types="../../.astro/types" />
 /// <reference types="astro" />
 
-type Post = import('astro:content').CollectionEntry<'posts'>
-type Essay = import('astro:content').CollectionEntry<'essays'>
+export type Post = import('astro:content').CollectionEntry<'posts'>
+export type Essay = import('astro:content').CollectionEntry<'essays'>
 
-type Page = import("astro").Page<Post>
-type EssayPage = import("astro").Page<Essay>
+export type Page = import("astro").Page<Post>
+export type EssayPage = import("astro").Page<Essay>
 

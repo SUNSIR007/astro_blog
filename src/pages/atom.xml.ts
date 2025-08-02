@@ -2,6 +2,7 @@ import rss from '@astrojs/rss';
 import { getPosts, getEssays, getEssayDisplayTitle } from '~/utils';
 import { THEME_CONFIG } from "~/theme.config";
 import type { APIContext } from 'astro';
+import type { Essay } from '~/types/index';
 import sanitizeHtml from 'sanitize-html';
 import MarkdownIt from 'markdown-it';
 
@@ -42,7 +43,7 @@ export async function GET(_context: APIContext) {
         const content = item.content
         // 确保标题存在，对于随笔使用生成的标题
         const itemTitle = item.type === 'essay'
-          ? (content.data.title || getEssayDisplayTitle(content))
+          ? (content.data.title || getEssayDisplayTitle(content as Essay))
           : content.data.title
 
         return {

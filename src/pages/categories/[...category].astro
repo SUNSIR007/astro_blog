@@ -4,6 +4,7 @@ import ListSection from '~/components/ListSection.astro'
 import { getCategories, formatDate, getPathFromCategory } from '~/utils'
 import ListItem from '~/components/ListItem.astro'
 import { THEME_CONFIG } from '~/theme.config'
+import type { Post } from '~/types/index'
 
 export async function getStaticPaths() {
   try {
@@ -28,6 +29,6 @@ const { name } = Astro.params
 
 <LayoutDefault>
   <ListSection title={name}>
-    {posts.map((post) => <ListItem title={post.data.title} href={`/posts/${post.slug}/`} description={formatDate(post.data.pubDate)} />)}
+    {posts.map((post: Post) => <ListItem title={post.data.title} href={`/posts/${post.slug}/`} description={formatDate(post.data.pubDate)} />)}
   </ListSection>
 </LayoutDefault>

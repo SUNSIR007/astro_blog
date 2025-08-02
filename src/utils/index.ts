@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content'
 import sanitizeHtml from 'sanitize-html'
 import MarkdownIt from 'markdown-it'
+import type { Post, Essay } from '../types/index'
 
 export async function getCategories() {
   try {
@@ -9,7 +10,7 @@ export async function getCategories() {
 
     posts.forEach((post) => {
       if (post.data.categories && Array.isArray(post.data.categories)) {
-        post.data.categories.forEach((c) => {
+        post.data.categories.forEach((c: string) => {
           if (c && typeof c === 'string') {
             const posts = categories.get(c) || []
             posts.push(post)
@@ -33,7 +34,7 @@ export async function getEssayCategories() {
 
     essays.forEach((essay) => {
       if (essay.data.categories && Array.isArray(essay.data.categories)) {
-        essay.data.categories.forEach((c) => {
+        essay.data.categories.forEach((c: string) => {
           if (c && typeof c === 'string') {
             const essays = categories.get(c) || []
             essays.push(essay)
