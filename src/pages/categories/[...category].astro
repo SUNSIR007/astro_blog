@@ -6,14 +6,19 @@ import ListItem from '~/components/ListItem.astro'
 import { THEME_CONFIG } from '~/theme.config'
 
 export async function getStaticPaths() {
-  const categories = await getCategories()
-  return Array.from(categories).map(([key, value]) => {
-    const path = getPathFromCategory(key, THEME_CONFIG.category_map);
-    return {
-      params: { category: path, name: key },
-      props: { posts: value },
-    }
-  })
+  try {
+    const categories = await getCategories()
+    return Array.from(categories).map(([key, value]) => {
+      const path = getPathFromCategory(key, THEME_CONFIG.category_map);
+      return {
+        params: { category: path, name: key },
+        props: { posts: value },
+      }
+    })
+  } catch (error) {
+    console.error('Error generating category paths:', error);
+    return []
+  }
 }
 
 const { posts } = Astro.props
