@@ -19,7 +19,7 @@ const totalPages = Math.ceil(totalEssays.length / 10)
         const { Content } = await essay.render()
         return (
           <EssayCard essay={essay}>
-            <div class="prose prose-invert [&>p]:mb-0 [&>*]:text-gray-300">
+            <div class="prose prose-invert [&>p]:mb-0 [&>*]:text-gray-300 [&>*:last-child]:mb-0">
               <Content />
             </div>
           </EssayCard>

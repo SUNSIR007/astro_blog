@@ -19,14 +19,14 @@ const { page } = Astro.props
 
 <LayoutDefault>
   <!-- 修复宽度问题 - 使用与主页相同的布局 -->
-  <section contain-layout un-flex="~ col gap-7.5">
+  <section contain-layout un-flex="~ col">
     <!-- 随笔列表 - 直接显示内容 -->
     {
       page.data.map(async (essay) => {
         const { Content } = await essay.render()
         return (
           <EssayCard essay={essay}>
-            <div class="prose prose-invert [&>p]:mb-0 [&>*]:text-gray-300">
+            <div class="prose prose-invert [&>p]:mb-0 [&>*]:text-gray-300 [&>*:last-child]:mb-0">
               <Content />
             </div>
           </EssayCard>
