@@ -33,14 +33,5 @@ const { translate: t } = Astro.locals
         ))
       }
     </ul>
-    <ul un-flex="~ row gap-1 justify-center">
-      {
-        socials.map((soc) => (
-          <li>
-            <a href={soc.href} target="_blank" title={soc.name} class={`icon i-mdi-${soc.name}`} />
-          </li>
-        ))
-      }
-    </ul>
   </nav>
 </header>

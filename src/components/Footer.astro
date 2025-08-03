@@ -4,8 +4,20 @@ import type { HTMLAttributes } from 'astro/types'
 type Props = HTMLAttributes<'footer'>
 
 const { ...attrs } = Astro.props
+const { socials } = Astro.locals.config
 ---
 
 <footer {...attrs}>
-  <!-- Footer content removed as requested -->
+  <!-- 社交媒体图标 -->
+  <nav class="text-center">
+    <ul un-flex="~ row gap-1 justify-center">
+      {
+        socials.map((soc) => (
+          <li>
+            <a href={soc.href} target="_blank" title={soc.name} class={`icon i-mdi-${soc.name}`} />
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
 </footer>
