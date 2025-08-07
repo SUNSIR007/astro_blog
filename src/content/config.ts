@@ -41,7 +41,20 @@ const essays = defineCollection({
   }),
 });
 
+const photos = defineCollection({
+  type: 'data',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    url: z.string().url(),
+    thumbnail: z.string().url().optional(),
+    alt: z.string(),
+    date: z.coerce.date(),
+  }),
+});
+
 export const collections = {
   posts,
   essays,
+  photos,
 };
