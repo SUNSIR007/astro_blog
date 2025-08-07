@@ -64,11 +64,11 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
   </head>
   <body>
     <div un-max-lg="animate-fadein-down" un-lg="flex flex-row-reverse justify-center gap-4 px-8" class="container contain-layout m-a">
-      <div un-lg="sticky top-0 h-screen py-20 animate-fadein-left gap-8" un-lg:flex="~ col justify-between items-start gap-4" class="p-7.5 min-h-screen">
+      <div un-lg="sticky top-0 h-screen py-20 animate-fadein-left gap-8" un-lg:flex="~ col justify-between items-start gap-4" class="px-7.5 pt-7.5 pb-0 min-h-screen">
         <Header />
         <Footer class="max-lg:hidden" />
       </div>
-      <main un-lg="py-20 w-3xl animate-fadein-down" class="p-7.5">
+      <main un-lg="py-20 w-3xl animate-fadein-down" class="px-7.5 pt-0 pb-7.5">
         <slot />
       </main>
       <Footer class="lg:hidden p-7.5" />
