@@ -29,20 +29,8 @@ export async function getCategories() {
 
 export async function getEssayCategories() {
   try {
-    const essays = await getEssays()
+    // Essays no longer have categories, so this function will return empty categories
     const categories = new Map<string, Essay[]>()
-
-    essays.forEach((essay) => {
-      if (essay.data.categories && Array.isArray(essay.data.categories)) {
-        essay.data.categories.forEach((c: string) => {
-          if (c && typeof c === 'string') {
-            const essays = categories.get(c) || []
-            essays.push(essay)
-            categories.set(c, essays)
-          }
-        })
-      }
-    })
 
     return categories
   } catch (error) {
@@ -94,10 +82,7 @@ export async function getEssays() {
 const parser = new MarkdownIt()
 
 export function getPostDescription(post: Post) {
-  if (post.data.description) {
-    return post.data.description
-  }
-
+  // Posts no longer have description, generate from content
   const html = parser.render(post.body)
   const sanitized = sanitizeHtml(html, { allowedTags: [] })
   return sanitized.slice(0, 400)
