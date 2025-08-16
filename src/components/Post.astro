@@ -36,7 +36,7 @@ const categories = !isEssay && post.collection === 'posts' ? (post as Collection
         <h1 class="post-title!">
           <a href={`${linkPrefix}${post.slug}/`}>{displayTitle}</a>
         </h1>
-        <div class="mt-2 text-3.5">
+        <div class="mt-2 text-3.5" un-max-lg="mt-1">
           <span>{t('posted_at')}</span>
           <time>{formatDate(post.data.pubDate)}</time>
           {
