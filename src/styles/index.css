@@ -25,6 +25,13 @@ article.heti a code {
   text-underline-offset: 4px;
 }
 
+/* 移动端第一个文章标题的顶部margin调整 */
+@media (max-width: 1023px) {
+  .first-post-mobile .first-post.heti h1 {
+    margin-block-start: 0 !important;
+  }
+}
+
 a:hover,
 article.heti a:hover,
 article.heti a code:hover {

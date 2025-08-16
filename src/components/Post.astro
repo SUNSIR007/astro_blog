@@ -1,12 +1,13 @@
 ---
 import { formatDate, getEssayDisplayTitle } from '~/utils'
 import type { CollectionEntry } from 'astro:content'
+import type { HTMLAttributes } from 'astro/types'
 
-interface Props {
+interface Props extends HTMLAttributes<'article'> {
   post: CollectionEntry<'posts'> | CollectionEntry<'essays'>
 }
 
-const { post } = Astro.props
+const { post, class: className, ...attrs } = Astro.props
 const { translate: t } = Astro.locals
 
 // 根据集合类型确定链接前缀和分类链接前缀
@@ -21,7 +22,7 @@ const displayTitle = isEssay ? getEssayDisplayTitle(post as CollectionEntry<'ess
 const categories = !isEssay && post.collection === 'posts' ? (post as CollectionEntry<'posts'>).data.categories : []
 ---
 
-<article class="heti">
+<article class={`heti ${className || ''}`} {...attrs}>
   <header>
     {isEssay ? (
       // 随笔样式：更简洁，类似微博

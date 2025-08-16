@@ -12,10 +12,10 @@ const { translate: t } = Astro.locals
 ---
 
 <LayoutDefault>
-  <section contain-layout un-flex="~ col gap-7.5" un-max-lg="gap-2">
+  <section contain-layout un-flex="~ col gap-7.5" un-max-lg="gap-2" class="first-post-mobile">
     {
-      posts.map((post) => (
-        <Post post={post}>
+      posts.map((post, index) => (
+        <Post post={post} class={index === 0 ? 'first-post' : ''}>
           <p class="line-clamp-4">{getPostDescription(post)}</p>
         </Post>
       ))

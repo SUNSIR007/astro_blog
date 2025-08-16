@@ -19,10 +19,10 @@ const { page } = Astro.props
 ---
 
 <LayoutDefault>
-  <section contain-layout un-flex="~ col gap-7.5" un-max-lg="gap-2">
+  <section contain-layout un-flex="~ col gap-7.5" un-max-lg="gap-2" class="first-post-mobile">
     {
-      page.data.map((post) => (
-        <Post post={post}>
+      page.data.map((post, index) => (
+        <Post post={post} class={index === 0 ? 'first-post' : ''}>
           <p class="line-clamp-4">{getPostDescription(post)}</p>
         </Post>
       ))
