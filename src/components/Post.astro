@@ -25,7 +25,7 @@ const categories = !isEssay && post.collection === 'posts' ? (post as Collection
   <header>
     {isEssay ? (
       // 随笔样式：更简洁，类似微博
-      <div class="mb-4">
+      <div class="mb-4" un-max-lg="mb-2">
         <div class="text-3.5 text-gray-500 mb-2">
           <time>{formatDate(post.data.pubDate)}</time>
         </div>
