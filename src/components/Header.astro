@@ -10,13 +10,13 @@ const { title, author, navs } = Astro.locals.config
 const { translate: t } = Astro.locals
 ---
 
-<header un-lg="grow-1 justify-between items-start" un-flex="~ col gap-0.5" class="text-center" {...attrs} un-max-lg="gap-0.1">
+<header un-lg="grow-1 justify-between items-start" un-flex="~ col gap-0.5" class="text-center" {...attrs} un-max-lg="gap-0">
   <hgroup
     un-hover:lg="bg-foreground color-background pt-3.75 pb-8.75 "
     un-lg=" write-vertical-right items-start px-2.5 pb-12 b-l-2px b-l-foreground-solid text-left"
     un-flex="~ col gap-0.5"
     class="cursor-pointer transition-[padding,background] duration-800 ease-in-out"
-    un-max-lg="pb-2"
+    un-max-lg="pb-1"
   >
     <a class="normal" href="/">
       <h3 class="text-5 font-extrabold font-serif">{author}</h3>
@@ -24,7 +24,7 @@ const { translate: t } = Astro.locals
     </a>
   </hgroup>
 
-  <nav class="text-center font-bold" un-flex="~ col gap-0.5" un-max-lg="gap-0.1">
+  <nav class="text-center font-bold" un-flex="~ col gap-0.5" un-max-lg="gap-0">
     <ul un-lg="flex-col items-start text-4" class="text-3.5" un-flex="~ row gap-2 justify-center">
       {
         navs.map((nav) => (
