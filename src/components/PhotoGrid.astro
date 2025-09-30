@@ -88,27 +88,57 @@ const sortedPhotos = photos.sort((a: CollectionEntry<'photos'>, b: CollectionEnt
       enableScroll()
     }
 
+    const exitFullscreenIfNeeded = () => {
+      if (document.fullscreenElement === overlay && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {
+          closeOverlay()
+        })
+      } else {
+        closeOverlay()
+      }
+    }
+
+    const openOverlay = (src, alt) => {
+      overlayImage.src = src
+      overlayImage.alt = alt || 'Photo preview'
+      overlay.classList.remove('hidden')
+      overlay.setAttribute('aria-hidden', 'false')
+      disableScroll()
+
+      if (overlay.requestFullscreen) {
+        overlay.requestFullscreen().catch(() => {
+          // Fullscreen API 失败时保持遮罩显示
+        })
+      }
+    }
+
     document.querySelectorAll('.photo-item img').forEach((img) => {
       if (!(img instanceof HTMLImageElement)) return
 
       img.addEventListener('click', () => {
         const src = img.currentSrc || img.getAttribute('src') || ''
-        overlayImage.src = src
-        overlayImage.alt = img.getAttribute('alt') || 'Photo preview'
-        overlay.classList.remove('hidden')
-        overlay.setAttribute('aria-hidden', 'false')
-        disableScroll()
+        openOverlay(src, img.getAttribute('alt') || '')
       })
     })
 
     overlay.addEventListener('click', (event) => {
       if (event.target === overlay) {
-        closeOverlay()
+        exitFullscreenIfNeeded()
       }
+    })
+
+    overlayImage.addEventListener('click', () => {
+      exitFullscreenIfNeeded()
     })
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
+        exitFullscreenIfNeeded()
+      }
+    })
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
         closeOverlay()
       }
     })
