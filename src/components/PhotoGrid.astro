@@ -17,8 +17,6 @@ const sortedPhotos = photos.sort((a: CollectionEntry<'photos'>, b: CollectionEnt
 ---
 
 <section class="photo-gallery">
-
-
   {sortedPhotos.length > 0 ? (
     <div class="photos-grid-display">
       <!-- 照片单列展示 -->
@@ -58,15 +56,86 @@ const sortedPhotos = photos.sort((a: CollectionEntry<'photos'>, b: CollectionEnt
       </p>
     </div>
   )}
+
+  <div
+    class="lightbox hidden"
+    data-role="photo-lightbox"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Photo preview"
+    aria-hidden="true"
+  >
+    <img class="lightbox-image" alt="" />
+  </div>
 </section>
 
+<script is:inline>
+  const setupPhotoLightbox = () => {
+    const overlay = document.querySelector('[data-role="photo-lightbox"]')
+    if (!overlay || !(overlay instanceof HTMLElement)) return
+
+    const overlayImage = overlay.querySelector('img')
+    if (!overlayImage || !(overlayImage instanceof HTMLImageElement)) return
+
+    const disableScroll = () => document.body.classList.add('overflow-hidden')
+    const enableScroll = () => document.body.classList.remove('overflow-hidden')
+
+    const closeOverlay = () => {
+      overlay.classList.add('hidden')
+      overlay.setAttribute('aria-hidden', 'true')
+      overlayImage.removeAttribute('src')
+      overlayImage.removeAttribute('alt')
+      enableScroll()
+    }
+
+    document.querySelectorAll('.photo-item img').forEach((img) => {
+      if (!(img instanceof HTMLImageElement)) return
+
+      img.addEventListener('click', () => {
+        const src = img.currentSrc || img.getAttribute('src') || ''
+        overlayImage.src = src
+        overlayImage.alt = img.getAttribute('alt') || 'Photo preview'
+        overlay.classList.remove('hidden')
+        overlay.setAttribute('aria-hidden', 'false')
+        disableScroll()
+      })
+    })
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) {
+        closeOverlay()
+      }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
+        closeOverlay()
+      }
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupPhotoLightbox)
+  } else {
+    setupPhotoLightbox()
+  }
+</script>
+
 <style>
-  .photos-grid {
-    @apply auto-rows-max;
+  .photo-item {
+    @apply relative;
   }
 
   .photo-item img {
-    @apply transition-opacity duration-300 hover:opacity-80;
+    @apply transition-transform duration-300 ease-out hover:scale-[1.01] hover:shadow-xl hover:shadow-black/30 hover:brightness-105;
+  }
+
+  .lightbox {
+    @apply fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out;
+  }
+
+  .lightbox-image {
+    @apply max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl;
   }
 
   .pagination a {
