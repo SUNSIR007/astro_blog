@@ -76,6 +76,89 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
       </main>
       <Footer class="lg:hidden p-7.5" un-max-lg="p-0.5" />
     </div>
+    <script is:inline>
+      (() => {
+        if (typeof window === 'undefined') return;
+
+        const overlayClass = 'image-fullscreen-backdrop';
+        const visibleClass = 'is-visible';
+        const boundFlag = 'fullscreenBound';
+        let overlay;
+        let overlayImg;
+        let previousOverflow = '';
+
+        function closeOverlay() {
+          if (!overlay || !overlayImg || !overlay.classList.contains(visibleClass)) return;
+          overlay.classList.remove(visibleClass);
+          overlay.setAttribute('aria-hidden', 'true');
+          overlayImg.removeAttribute('src');
+          overlayImg.alt = '';
+          document.body.style.overflow = previousOverflow;
+        }
+
+        function ensureOverlay() {
+          if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = overlayClass;
+            overlay.setAttribute('aria-hidden', 'true');
+            overlay.innerHTML = '<img alt="" />';
+            overlay.addEventListener('click', closeOverlay);
+            document.body.appendChild(overlay);
+          }
+
+          overlayImg = overlay.querySelector('img');
+          if (overlayImg && !overlayImg.hasAttribute('data-listener')) {
+            overlayImg.addEventListener('click', (event) => event.stopPropagation());
+            overlayImg.setAttribute('data-listener', 'true');
+          }
+        }
+
+        function openOverlay(img) {
+          ensureOverlay();
+          if (!overlay || !overlayImg) return;
+
+          overlayImg.src = img.currentSrc || img.src;
+          overlayImg.alt = img.alt || '';
+          previousOverflow = document.body.style.overflow;
+          document.body.style.overflow = 'hidden';
+          overlay.classList.add(visibleClass);
+          overlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function bindImage(img) {
+          if (img.dataset[boundFlag] === 'true') return;
+          img.dataset[boundFlag] = 'true';
+          img.addEventListener('click', (event) => {
+            if (event.button !== 0) return;
+            event.preventDefault();
+            event.stopPropagation();
+            openOverlay(img);
+          });
+        }
+
+        function scanImages() {
+          document.querySelectorAll('img').forEach(bindImage);
+        }
+
+        ensureOverlay();
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', scanImages, { once: true });
+        } else {
+          scanImages();
+        }
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') closeOverlay();
+        });
+
+        const observer = new MutationObserver(() => {
+          scanImages();
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+      })();
+    </script>
   </body>
 </html>
 
