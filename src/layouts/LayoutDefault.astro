@@ -127,6 +127,7 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
 
         function bindImage(img) {
           if (img.dataset[boundFlag] === 'true') return;
+          if (img.closest(`.${overlayClass}`)) return;
           img.dataset[boundFlag] = 'true';
           img.addEventListener('click', (event) => {
             if (event.button !== 0) return;
