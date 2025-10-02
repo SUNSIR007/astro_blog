@@ -20,6 +20,7 @@ const { header } = Astro.locals.config
 const title = props.title ?? themeConfig.title
 const desc = props.desc ?? themeConfig.desc
 const canonical = themeConfig.website
+const iconPath = '/mountains.png'
 
 const image =
   props.banner &&
@@ -41,7 +42,7 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
       title={title}
       description={desc}
       extend={{
-        link: [{ rel: 'icon', href: '/mountains.png', type: 'image/png' }],
+        link: [{ rel: 'icon', href: iconPath, type: 'image/png' }],
         meta: [
           { name: "twitter:image:src", content: optimizedImage },
           { name: "twitter:image:alt", content: desc },
@@ -61,6 +62,8 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
         }
       }}
     />
+    <link rel="icon" type="image/png" href={iconPath} />
+    <link rel="apple-touch-icon" href={iconPath} />
   </head>
   <body>
     <div un-max-lg="flex flex-col gap-0" un-lg="flex flex-row-reverse justify-center gap-4 px-8" class="container contain-layout m-a">
