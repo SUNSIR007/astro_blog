@@ -137,13 +137,13 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
             overlay.setAttribute('aria-hidden', 'true');
             overlay.innerHTML = `
               <button type="button" class="image-fullscreen-nav image-fullscreen-prev" aria-label="上一张">
-                <span>&lt;</span>
+                <span>&#10094;</span>
               </button>
               <div class="image-fullscreen-media">
                 <img alt="" />
               </div>
               <button type="button" class="image-fullscreen-nav image-fullscreen-next" aria-label="下一张">
-                <span>&gt;</span>
+                <span>&#10095;</span>
               </button>
             `;
             document.body.appendChild(overlay);
