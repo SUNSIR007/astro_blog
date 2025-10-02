@@ -11,7 +11,10 @@ const { author } = Astro.locals.config
 ---
 
 <!-- 带连接线的随笔卡片 -->
-<article class="relative">
+<article
+  class="relative"
+  data-fullscreen-scope={`essay-${essay.slug}`}
+>
   <!-- 圆点和内容 -->
   <div class="relative flex gap-3 py-6">
     <div class="flex-shrink-0 relative">

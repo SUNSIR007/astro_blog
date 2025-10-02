@@ -16,7 +16,10 @@ const sortedPhotos = photos.sort((a: CollectionEntry<'photos'>, b: CollectionEnt
 )
 ---
 
-<section class="photo-gallery">
+<section
+  class="photo-gallery"
+  data-fullscreen-scope={`gallery-page-${currentPage}`}
+>
 
 
   {sortedPhotos.length > 0 ? (

@@ -83,9 +83,39 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
         const overlayClass = 'image-fullscreen-backdrop';
         const visibleClass = 'is-visible';
         const boundFlag = 'fullscreenBound';
+        const groupDataKey = 'fullscreenGroup';
+        const indexDataKey = 'fullscreenIndex';
+        const scopeAttr = 'data-fullscreen-scope';
+        const scopeSelector = `[${scopeAttr}]`;
+        const scopeIdKey = 'fullscreenScopeId';
+
         let overlay;
         let overlayImg;
+        let prevButton;
+        let nextButton;
+        let overlayListenersBound = false;
+        let currentGroupId = '';
+        let currentIndex = -1;
         let previousOverflow = '';
+        let scopeCounter = 0;
+        const groups = new Map();
+
+        function updateNavState(group) {
+          if (!prevButton || !nextButton) return;
+
+          if (!group || group.length <= 1) {
+            prevButton.hidden = true;
+            nextButton.hidden = true;
+            prevButton.disabled = true;
+            nextButton.disabled = true;
+            return;
+          }
+
+          prevButton.hidden = false;
+          nextButton.hidden = false;
+          prevButton.disabled = currentIndex <= 0;
+          nextButton.disabled = currentIndex >= group.length - 1;
+        }
 
         function closeOverlay() {
           if (!overlay || !overlayImg || !overlay.classList.contains(visibleClass)) return;
@@ -93,7 +123,11 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
           overlay.setAttribute('aria-hidden', 'true');
           overlayImg.removeAttribute('src');
           overlayImg.alt = '';
+          currentGroupId = '';
+          currentIndex = -1;
           document.body.style.overflow = previousOverflow;
+          previousOverflow = '';
+          updateNavState([]);
         }
 
         function ensureOverlay() {
@@ -101,32 +135,79 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
             overlay = document.createElement('div');
             overlay.className = overlayClass;
             overlay.setAttribute('aria-hidden', 'true');
-            overlay.innerHTML = '<img alt="" />';
-            overlay.addEventListener('click', closeOverlay);
+            overlay.innerHTML = `
+              <button type="button" class="image-fullscreen-nav image-fullscreen-prev" aria-label="上一张">
+                <span>&lt;</span>
+              </button>
+              <div class="image-fullscreen-media">
+                <img alt="" />
+              </div>
+              <button type="button" class="image-fullscreen-nav image-fullscreen-next" aria-label="下一张">
+                <span>&gt;</span>
+              </button>
+            `;
             document.body.appendChild(overlay);
           }
 
-          overlayImg = overlay.querySelector('img');
-          if (overlayImg && !overlayImg.hasAttribute('data-listener')) {
-            overlayImg.addEventListener('click', (event) => {
+          overlayImg = overlay.querySelector('.image-fullscreen-media img');
+          prevButton = overlay.querySelector('.image-fullscreen-prev');
+          nextButton = overlay.querySelector('.image-fullscreen-next');
+
+          if (!overlayListenersBound) {
+            overlay.addEventListener('click', closeOverlay);
+            const media = overlay.querySelector('.image-fullscreen-media');
+            media?.addEventListener('click', (event) => event.stopPropagation());
+            prevButton?.addEventListener('click', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              showPrevious();
+            });
+            nextButton?.addEventListener('click', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              showNext();
+            });
+            overlayImg?.addEventListener('click', (event) => {
               event.preventDefault();
               event.stopPropagation();
               closeOverlay();
             });
-            overlayImg.setAttribute('data-listener', 'true');
+            overlayListenersBound = true;
           }
         }
 
-        function openOverlay(img) {
-          ensureOverlay();
-          if (!overlay || !overlayImg) return;
+        function resolveGroupId(img) {
+          const scopeElement = img.closest(scopeSelector);
+          if (scopeElement) {
+            if (!scopeElement.dataset[scopeIdKey]) {
+              scopeCounter += 1;
+              scopeElement.dataset[scopeIdKey] = `scope-${scopeCounter}`;
+            }
+            return scopeElement.dataset[scopeIdKey];
+          }
+          return 'scope-page';
+        }
 
-          overlayImg.src = img.currentSrc || img.src;
-          overlayImg.alt = img.alt || '';
-          previousOverflow = document.body.style.overflow;
-          document.body.style.overflow = 'hidden';
-          overlay.classList.add(visibleClass);
-          overlay.setAttribute('aria-hidden', 'false');
+        function rebuildGroups() {
+          groups.clear();
+          const images = Array.from(document.querySelectorAll('img')).filter((image) => {
+            return !image.closest(`.${overlayClass}`);
+          });
+
+          images.forEach((image) => {
+            const groupId = resolveGroupId(image);
+            if (!groups.has(groupId)) {
+              groups.set(groupId, []);
+            }
+            groups.get(groupId).push(image);
+          });
+
+          groups.forEach((collection, groupId) => {
+            collection.forEach((image, index) => {
+              image.dataset[groupDataKey] = groupId;
+              image.dataset[indexDataKey] = String(index);
+            });
+          });
         }
 
         function bindImage(img) {
@@ -142,7 +223,64 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
         }
 
         function scanImages() {
-          document.querySelectorAll('img').forEach(bindImage);
+          document.querySelectorAll('img').forEach((img) => {
+            if (img.closest(`.${overlayClass}`)) return;
+            bindImage(img);
+          });
+          rebuildGroups();
+        }
+
+        function showImageAtCurrentIndex() {
+          if (!overlay || !overlayImg) return;
+          const group = groups.get(currentGroupId);
+          if (!group || !group.length) {
+            closeOverlay();
+            return;
+          }
+
+          if (currentIndex < 0) currentIndex = 0;
+          if (currentIndex >= group.length) currentIndex = group.length - 1;
+
+          const targetImg = group[currentIndex];
+          overlayImg.src = targetImg.currentSrc || targetImg.src;
+          overlayImg.alt = targetImg.alt || '';
+          updateNavState(group);
+        }
+
+        function openOverlay(img) {
+          ensureOverlay();
+          rebuildGroups();
+
+          const groupId = img.dataset[groupDataKey] || resolveGroupId(img);
+          const group = groups.get(groupId);
+
+          if (!group || !group.length) return;
+
+          currentGroupId = groupId;
+          currentIndex = group.indexOf(img);
+          if (currentIndex === -1) {
+            currentIndex = Number(img.dataset[indexDataKey] || 0);
+          }
+
+          previousOverflow = document.body.style.overflow;
+          document.body.style.overflow = 'hidden';
+          overlay.classList.add(visibleClass);
+          overlay.setAttribute('aria-hidden', 'false');
+          showImageAtCurrentIndex();
+        }
+
+        function showPrevious() {
+          if (currentIndex <= 0) return;
+          currentIndex -= 1;
+          showImageAtCurrentIndex();
+        }
+
+        function showNext() {
+          const group = groups.get(currentGroupId);
+          if (!group) return;
+          if (currentIndex >= group.length - 1) return;
+          currentIndex += 1;
+          showImageAtCurrentIndex();
         }
 
         ensureOverlay();
@@ -154,7 +292,18 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
         }
 
         document.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape') closeOverlay();
+          if (!overlay || !overlay.classList.contains(visibleClass)) return;
+          if (event.key === 'Escape') {
+            closeOverlay();
+            return;
+          }
+          if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            showPrevious();
+          } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            showNext();
+          }
         });
 
         const observer = new MutationObserver(() => {

@@ -108,10 +108,58 @@ img:hover {
   display: flex;
 }
 
+.image-fullscreen-media {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.image-fullscreen-media img {
+  display: block;
+}
+
 .image-fullscreen-backdrop img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
   cursor: zoom-out;
+}
+
+.image-fullscreen-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 9999px;
+  background-color: rgba(17, 17, 17, 0.65);
+  color: #f1f1f1;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.image-fullscreen-nav:hover,
+.image-fullscreen-nav:focus {
+  background-color: rgba(34, 34, 34, 0.75);
+  outline: none;
+}
+
+.image-fullscreen-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.image-fullscreen-prev {
+  left: 2rem;
+}
+
+.image-fullscreen-next {
+  right: 2rem;
 }

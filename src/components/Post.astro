@@ -22,7 +22,11 @@ const displayTitle = isEssay ? getEssayDisplayTitle(post as CollectionEntry<'ess
 const categories = !isEssay && post.collection === 'posts' ? (post as CollectionEntry<'posts'>).data.categories : []
 ---
 
-<article class={`heti ${className || ''}`} {...attrs}>
+<article
+  class={`heti ${className || ''}`}
+  data-fullscreen-scope={`${post.collection}-${post.slug}`}
+  {...attrs}
+>
   <header>
     {isEssay ? (
       // 随笔样式：更简洁，类似微博

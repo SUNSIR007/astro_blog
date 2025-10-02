@@ -33,7 +33,10 @@ const { author } = Astro.locals.config
   <!-- 随笔详情页面 - 修复宽度问题，使用与主页相同的布局 -->
   <section contain-layout un-flex="~ col gap-7.5">
     <!-- 随笔详情卡片 -->
-    <article class="relative py-4">
+    <article
+      class="relative py-4"
+      data-fullscreen-scope={`essay-${entry.slug}`}
+    >
       <!-- 圆点 - 与列表页保持一致 -->
       <div class="flex gap-3">
         <div class="flex-shrink-0">
