@@ -119,11 +119,13 @@ img:hover {
 }
 
 .image-fullscreen-backdrop img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: calc(100vw - 4rem);
+  max-height: calc(100vh - 4rem);
   object-fit: contain;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
   cursor: zoom-out;
+  width: auto;
+  height: auto;
 }
 
 .image-fullscreen-nav {

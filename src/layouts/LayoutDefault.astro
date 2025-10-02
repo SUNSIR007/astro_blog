@@ -104,15 +104,15 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
           if (!prevButton || !nextButton) return;
 
           if (!group || group.length <= 1) {
-            prevButton.hidden = true;
-            nextButton.hidden = true;
+            prevButton.style.visibility = 'hidden';
+            nextButton.style.visibility = 'hidden';
             prevButton.disabled = true;
             nextButton.disabled = true;
             return;
           }
 
-          prevButton.hidden = false;
-          nextButton.hidden = false;
+          prevButton.style.visibility = 'visible';
+          nextButton.style.visibility = 'visible';
           prevButton.disabled = currentIndex <= 0;
           nextButton.disabled = currentIndex >= group.length - 1;
         }
