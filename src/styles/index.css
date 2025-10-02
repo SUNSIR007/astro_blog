@@ -113,4 +113,5 @@ img:hover {
   max-height: 100%;
   object-fit: contain;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  cursor: zoom-out;
 }

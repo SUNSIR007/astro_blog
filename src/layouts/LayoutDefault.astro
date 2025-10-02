@@ -108,7 +108,11 @@ const optimizedImage = new URL(image?.src??"/placeholder.png", Astro.url).toStri
 
           overlayImg = overlay.querySelector('img');
           if (overlayImg && !overlayImg.hasAttribute('data-listener')) {
-            overlayImg.addEventListener('click', (event) => event.stopPropagation());
+            overlayImg.addEventListener('click', (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              closeOverlay();
+            });
             overlayImg.setAttribute('data-listener', 'true');
           }
         }
